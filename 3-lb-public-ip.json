@@ -12,11 +12,8 @@
       "type": "string",
       "allowedValues": [
         "East US",
-        "West US",
-        "West Europe",
-        "East Asia",
-        "Southeast Asia"
-      ],
+        "West US"
+        ],
       "metadata": {
         "description": "Location to deploy"
       }
