@@ -8,6 +8,7 @@
         "description": "Unique DNS name"
       }
     },
+	
     "location": {
       "type": "string",
       "allowedValues": [
@@ -31,7 +32,7 @@
     }
   },
   "variables": {
-    "virtualNetworkName": "rsazv2demo2vnet",
+    "virtualNetworkName": "First_ARM_VNet",
     "publicIPAddressName": "FEVIP1",
     "subnetName": "FESubnetName",
     "loadBalancerName": "ALB",
@@ -129,3 +130,4 @@
     }
   ]
 }
+
