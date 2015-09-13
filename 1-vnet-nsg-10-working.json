@@ -22,7 +22,7 @@
         "description": "The CIDR address space for your Virtual Network in Azure"
       }
     },
-    "FESubnetPrefix": {
+    "WebSubnetPrefix": {
       "type": "string",
       "defaultValue": "10.0.0.0/24",
       "metadata": {
@@ -43,9 +43,9 @@
         "description": "This is CIDR prefix for the Database Subnet"
       }
     },
-    "FENSGName": {
+    "WebNSGName": {
       "type": "string",
-      "defaultValue": "FE_NSG",
+      "defaultValue": "Web_NSG",
       "metadata": {
         "description": "This is name of the networkSecurityGroup that will be assigned to FrontEnd Subnet"
       }
@@ -69,7 +69,7 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[parameters('FENSGName')]",
+      "name": "[parameters('WebNSGName')]",
       "location": "[parameters('location')]",
       "properties": {
         "securityRules": [
@@ -178,7 +178,7 @@
             }
           },
           {
-            "name": "Block_FE",
+            "name": "Block_Web",
             "properties": {
               "description": "Block FE Subnet",
               "protocol": "*",
@@ -228,7 +228,7 @@
       "name": "[parameters('virtualNetworkName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('FENSGName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('WebNSGName'))]",
         "[concat('Microsoft.Network/networkSecurityGroups/', parameters('AppNSGName'))]",
         "[concat('Microsoft.Network/networkSecurityGroups/', parameters('DBNSGName'))]"
       ],
@@ -242,9 +242,9 @@
           {
             "name": "FESubnetName",
             "properties": {
-              "addressPrefix": "[parameters('FESubnetPrefix')]",
+              "addressPrefix": "[parameters('WebSubnetPrefix')]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('FENSGName'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('WebNSGName'))]"
               }
             }
           },
