@@ -148,35 +148,7 @@
                 "displayName": "WebAvailabilitySet"
             }
         },
-        {
-				"type": "Microsoft.Compute/virtualMachines/extensions",
-				"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-				"apiVersion": "2015-05-01-preview",
-				"location": "[resourceGroup().location]",
-				"copy": {
-				"name": "extensionLoop",
-				"count": "[variables('numberOfInstances')]"
-				},
-				"dependsOn": [
-				"[concat('Microsoft.Compute/virtualMachines/', variables('webPrefix'), copyIndex())]"
-				],
-				"properties": {
-				"publisher": "Chef.Bootstrap.WindowsAzure",
-				"type": "LinuxChefClient",
-				"typeHandlerVersion": "1207.12",
-				"settings": {
-				"bootstrap_options": {
-				"chef_node_name": "[concat(parameters('chef_node_name'),copyIndex())]",
-				"chef_server_url": "[parameters('chef_server_url')]",
-				"validation_client_name": "[parameters('validation_client_name')]"
-				},
-				"runlist": "[parameters('runlist')]"
-				},
-				"protectedSettings": {
-				"validation_key": "[parameters('validation_key')]"
-				}
-				}
-			},
+        
 		{
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/virtualNetworks",
@@ -294,9 +266,12 @@
                             "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('webPrefix'), 'nic', copyindex()))]"
                         }
                     ]
-                }
-            }
-        },
+                },
+				
+            
+			}
+        
+		},
         {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
