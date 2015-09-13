@@ -54,9 +54,12 @@
         },
         "vmSize": {
             "type": "string",
-            "defaultValue": "Standard_D1",
+            "defaultValue": "Standard_A0",
             "allowedValues": [
-                "Standard_D1"
+                "Standard_A0",
+				"Standard_A1",
+				"Standard_A2",
+				"Standard_D1"
             ],
             "metadata": {
                 "description": "This is the allowed list of VM sizes"
@@ -103,19 +106,19 @@
     },
     "variables": {
         "VirtualNetworkPrefix": "10.0.0.0/16",
-        "subnet1Name": "FESubnetName",
+        "subnet1Name": "WebSubnet",
         "subnet1Prefix": "10.0.0.0/24",
-        "subnet2Name": "AppSubnetName",
+        "subnet2Name": "AppSubnet",
         "subnet2Prefix": "10.0.1.0/24",
-        "subnet3Name": "DBSubnetName",
+        "subnet3Name": "DBSubnet",
         "subnet3Prefix": "10.0.2.0/24",
-        "devPrefix": "fe",
-        "stagePrefix": "web",
-        "prodPrefix": "db",
+        "webPrefix": "web",
+        "appPrefix": "app",
+        "dbPrefix": "db",
 		"vmExtensionName": "LinuxChefExtension",
-        "devAvailabilitySetName": "FEAvSet",
-        "stageAvailabilitySetName": "AppAvSet",
-        "prodAvailabilitySetName": "DBAvSet",
+        "webAvailabilitySetName": "WebAvSet",
+        "appAvailabilitySetName": "AppAvSet",
+        "dbAvailabilitySetName":  "DBAvSet",
         "storageAccountType": "Standard_LRS",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
@@ -139,13 +142,42 @@
         {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
-            "name": "[variables('devAvailabilitySetName')]",
+            "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
             "tags": {
-                "displayName": "FEAvailabilitySet"
+                "displayName": "WebAvailabilitySet"
             }
         },
         {
+				"type": "Microsoft.Compute/virtualMachines/extensions",
+				"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
+				"apiVersion": "2015-05-01-preview",
+				"location": "[resourceGroup().location]",
+				"copy": {
+				"name": "extensionLoop",
+				"count": "[variables('numberOfInstances')]"
+				},
+				"dependsOn": [
+				"[concat('Microsoft.Compute/virtualMachines/', variables('appPrefix'), copyIndex())]"
+				],
+				"properties": {
+				"publisher": "Chef.Bootstrap.WindowsAzure",
+				"type": "LinuxChefClient",
+				"typeHandlerVersion": "1207.12",
+				"settings": {
+				"bootstrap_options": {
+				"chef_node_name": "[concat(parameters('chef_node_name'),copyIndex())]",
+				"chef_server_url": "[parameters('chef_server_url')]",
+				"validation_client_name": "[parameters('validation_client_name')]"
+				},
+				"runlist": "[parameters('runlist')]"
+				},
+				"protectedSettings": {
+				"validation_key": "[parameters('validation_key')]"
+				}
+				}
+			},
+		{
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
@@ -185,7 +217,7 @@
         {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(variables('devPrefix'), 'nic', copyindex())]",
+            "name": "[concat(variables('webPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "FENetworkInterfaces"
@@ -212,7 +244,7 @@
             }
         },
         {
-            "name": "[concat(variables('devPrefix'), copyindex())]",
+            "name": "[concat(variables('webPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
             "apiVersion": "2015-05-01-preview",
@@ -225,18 +257,18 @@
             },
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-                "[concat('Microsoft.Network/networkInterfaces/', variables('devPrefix'), 'nic', copyindex())]",
-                "[concat('Microsoft.Compute/availabilitySets/', variables('devAvailabilitySetName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('webPrefix'), 'nic', copyindex())]",
+                "[concat('Microsoft.Compute/availabilitySets/', variables('webAvailabilitySetName'))]"
             ],
             "properties": {
                 "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('devAvailabilitySetName'))]"
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('webAvailabilitySetName'))]"
                 },
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
-                    "computername": "[concat(variables('devPrefix'), copyIndex())]",
+                    "computername": "[concat(variables('webPrefix'), copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
@@ -250,7 +282,7 @@
                     "osDisk": {
                         "name": "osdisk",
                         "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('devPrefix'), copyindex(), '.vhd')]"
+                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('webPrefix'), copyindex(), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -259,7 +291,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('devPrefix'), 'nic', copyindex()))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('webPrefix'), 'nic', copyindex()))]"
                         }
                     ]
                 }
@@ -268,7 +300,7 @@
         {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
-            "name": "[variables('stageAvailabilitySetName')]",
+            "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "AppAvailabilitySet"
@@ -276,7 +308,7 @@
         },
      {
 				"type": "Microsoft.Compute/virtualMachines/extensions",
-				"name": "[concat(variables('stagePrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
+				"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 				"apiVersion": "2015-05-01-preview",
 				"location": "[resourceGroup().location]",
 				"copy": {
@@ -284,7 +316,7 @@
 				"count": "[variables('numberOfInstances')]"
 				},
 				"dependsOn": [
-				"[concat('Microsoft.Compute/virtualMachines/', variables('stagePrefix'), copyIndex())]"
+				"[concat('Microsoft.Compute/virtualMachines/', variables('appPrefix'), copyIndex())]"
 				],
 				"properties": {
 				"publisher": "Chef.Bootstrap.WindowsAzure",
@@ -306,7 +338,7 @@
 	    {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(variables('stagePrefix'), 'nic', copyindex())]",
+            "name": "[concat(variables('appPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "AppNetworkInterfaces"
@@ -333,7 +365,7 @@
             }
         },
         {
-            "name": "[concat(variables('stagePrefix'), copyindex())]",
+            "name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
             "apiVersion": "2015-05-01-preview",
@@ -346,18 +378,18 @@
             },
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-                "[concat('Microsoft.Network/networkInterfaces/', variables('stagePrefix'), 'nic', copyindex())]",
-                "[concat('Microsoft.Compute/availabilitySets/', variables('stageAvailabilitySetName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('appPrefix'), 'nic', copyindex())]",
+                "[concat('Microsoft.Compute/availabilitySets/', variables('appAvailabilitySetName'))]"
             ],
             "properties": {
                 "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('stageAvailabilitySetName'))]"
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('appAvailabilitySetName'))]"
                 },
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
-                    "computername": "[concat(variables('stagePrefix'), copyIndex())]",
+                    "computername": "[concat(variables('appPrefix'), copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
@@ -371,7 +403,7 @@
                     "osDisk": {
                         "name": "osdisk",
                         "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('stagePrefix'), copyindex(), '.vhd')]"
+                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('appPrefix'), copyindex(), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -380,7 +412,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('stagePrefix'), 'nic', copyindex()))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('appPrefix'), 'nic', copyindex()))]"
                         }
                     ]
                 }
@@ -389,7 +421,7 @@
         {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
-            "name": "[variables('prodAvailabilitySetName')]",
+            "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "DBAvailabilitySet"
@@ -397,7 +429,7 @@
         },
         {
 			"type": "Microsoft.Compute/virtualMachines/extensions",
-			"name": "[concat(variables('prodPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
+			"name": "[concat(variables('dbPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 			"apiVersion": "2015-05-01-preview",
 			"location": "[resourceGroup().location]",
 			"copy": {
@@ -405,7 +437,7 @@
 			"count": "[variables('numberOfInstances')]"
 			},
 			"dependsOn": [
-			"[concat('Microsoft.Compute/virtualMachines/', variables('prodPrefix'), copyIndex())]"
+			"[concat('Microsoft.Compute/virtualMachines/', variables('dbPrefix'), copyIndex())]"
 			],
 			"properties": {
 				"publisher": "Chef.Bootstrap.WindowsAzure",
@@ -427,7 +459,7 @@
 		{
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(variables('prodPrefix'), 'nic', copyindex())]",
+            "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "DBNetworkInterfaces"
@@ -454,7 +486,7 @@
             }
         },
         {
-            "name": "[concat(variables('prodPrefix'), copyindex())]",
+            "name": "[concat(variables('dbPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
             "apiVersion": "2015-05-01-preview",
@@ -467,18 +499,18 @@
             },
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-                "[concat('Microsoft.Network/networkInterfaces/', variables('prodPrefix'), 'nic', copyindex())]",
-                "[concat('Microsoft.Compute/availabilitySets/', variables('prodAvailabilitySetName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('dbPrefix'), 'nic', copyindex())]",
+                "[concat('Microsoft.Compute/availabilitySets/', variables('dbAvailabilitySetName'))]"
             ],
             "properties": {
                 "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('prodAvailabilitySetName'))]"
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('dbAvailabilitySetName'))]"
                 },
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
-                    "computername": "[concat(variables('prodPrefix'), copyIndex())]",
+                    "computername": "[concat(variables('dbPrefix'), copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
@@ -492,7 +524,7 @@
                     "osDisk": {
                         "name": "osdisk",
                         "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('prodPrefix'), copyindex(), '.vhd')]"
+                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('dbPrefix'), copyindex(), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -501,7 +533,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('prodPrefix'), 'nic', copyindex()))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('dbPrefix'), 'nic', copyindex()))]"
                         }
                     ]
                 }
