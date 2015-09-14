@@ -34,7 +34,7 @@
   "variables": {
     "virtualNetworkName": "First_ARM_VNet",
     "publicIPAddressName": "FEVIP1",
-    "subnetName": "FESubnetName",
+    "subnetName": "WebSubnetName",
     "loadBalancerName": "ALB",
     "nicName": "fenic0",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",

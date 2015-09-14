@@ -65,7 +65,7 @@
     },
     "variables": {
         "VirtualNetworkPrefix": "10.0.0.0/16",
-        "subnet1Name": "FESubnetName",
+        "subnet1Name": "WebSubnetName",
         "subnet1Prefix": "10.0.0.0/24",
         "subnet2Name": "AppSubnetName",
         "subnet2Prefix": "10.0.1.0/24",
