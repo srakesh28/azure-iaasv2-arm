@@ -33,10 +33,10 @@
   },
   "variables": {
     "virtualNetworkName": "First_ARM_VNet",
-    "publicIPAddressName": "FEVIP1",
+    "publicIPAddressName": "WEBVIP1",
     "subnetName": "WebSubnetName",
     "loadBalancerName": "ALB",
-    "nicName": "fenic0",
+    "nicName": "webnic0",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
