@@ -20,9 +20,9 @@ Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
 
 azure login
 
-Username: <your org login>
+Username: "<your org login>"
 
-Pass : <your org pass>
+Pass : "<your org pass>"
 
 azure account list
 
