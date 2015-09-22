@@ -11,8 +11,9 @@ It opens up DB Subnet only on the mysql DB port to App Subnet.
 
 This Template builds up-on Next Template as Step2 for building your Infrastructure on Azure
 
-<a href="https://azuredeploy.net/?repository=https://github.com/srakesh28/demo-working/blob/master/step1-network/azuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://github.com/srakesh28/demo-working/blob/master/step1-network/azuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
+
 </a>
 
 Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
