@@ -19,9 +19,13 @@ This Template builds up-on Next Template as Step2 for building your Infrastructu
 Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
 
 azure login
+
 Username: <your org login>
+
 Pass : <your org pass>
+
 azure account list
+
 azure account set "Your Account Name"
 
 
