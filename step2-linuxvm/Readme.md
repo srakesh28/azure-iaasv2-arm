@@ -9,7 +9,7 @@ It provides option to deploy Chef Agent extensions as part of the deployment.
 
 This Template builds up-on Next Template as Step2 for building your Infrastructure on Azure
 
-<a href="https://azuredeploy.net/?repository=https://raw.githubusercontent.com/srakesh28/demo-working/master/step2-linuxvms/azuredeploy-parameters.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep2-linuxvms%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
