@@ -7,7 +7,7 @@ It also creates  Availability Sets for VM pairs in respective subnets for HA
 It provides option to deploy Chef Agent extensions as part of the deployment.
 
 
-This Template builds up-on Next Template as Step2 for building your Infrastructure on Azure
+This Template builds up-on Next Template as Step3 for building your Infrastructure on Azure
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep2-linuxvms%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
