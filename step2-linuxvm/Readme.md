@@ -9,7 +9,7 @@ It provides option to deploy Chef Agent extensions as part of the deployment.
 
 This Template builds up-on Next Template as Step3 for building your Infrastructure on Azure
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep2-linuxvms%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep2-linuxvm%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
@@ -29,7 +29,7 @@ Step1) azure group create <Your Resource Group Name> <Your Locaion> westus
 
 Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step1-network/azuredeploy.json <Your Resource Group Name> <optional deployment name> 
 
-Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step2-linuxvms/azuredeploy.json <Your Resource Group Name> <optional deployment name>  ( This Template)
+Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step2-linuxvm/azuredeploy.json <Your Resource Group Name> <optional deployment name>  ( This Template)
 
 Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step3-lb/azuredeploy.json <Your Resource Group Name> <optional deployment name>
 
