@@ -11,7 +11,7 @@ It opens up DB Subnet only on the mysql DB port to App Subnet.
 
 This Template builds up-on Next Template as Step2 for building your Infrastructure on Azure
 
-<a href="https://azuredeploy.net/?repository=https://raw.githubusercontent.com/srakesh28/demo-working/master/1-vnet-nsg-10-working.json" target="_blank">
+<a href="https://azuredeploy.net/?repository=https://raw.githubusercontent.com/srakesh28/demo-working/master/step1-network/azuredeploy-parameters.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
