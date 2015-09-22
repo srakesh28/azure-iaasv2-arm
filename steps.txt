@@ -1,5 +1,7 @@
 Azure Login and Set Env:
 
+
+
 Azure CLI Instructions:
 
 azure login
