@@ -24,13 +24,14 @@ azure account list
 azure account set "Your Account Name"
 
 Create a Resource Group
+Create a Resource Group
 
 Step1) azure group create <Your Resource Group Name> <Your Locaion> westus
 
-Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/1-vnet-nsg-10-working.json <Your Resource Group Name> <optional deployment name> (This Template)
+Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step1-network/azuredeploy.json <Your Resource Group Name> <optional deployment name> (This Template)
 
-Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/2-vms-vnet-nsg-linux-working.json <Your Resource Group Name> <optional deployment name>  ( Link : )
+Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step2-linuxvms/azuredeploy.json <Your Resource Group Name> <optional deployment name> 
 
-Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/3-lb-public-ip.json <Your Resource Group Name> <optional deployment name>   (Link : )
+Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/demo-working/master/step3-lb/azuredeploy.json <Your Resource Group Name> <optional deployment name> 
 
 </html>
