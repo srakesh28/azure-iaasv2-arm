@@ -24,13 +24,14 @@ Pass : <your org pass>
 azure account list
 azure account set "Your Account Name"
 
-Create a Resource Group
-
 
 Step1) azure group create <resource group name> <resource group location> westus
 ex : azure group create demo1 westus
+
 Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json (This Template)
+
 Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy.json 
+
 Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json
 
 
