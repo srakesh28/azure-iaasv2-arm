@@ -14,8 +14,6 @@ This Template is the last step for building your Infrastructure on Azure
 
 Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
 
-Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
-
 azure login
 
 Username: "your org login"
