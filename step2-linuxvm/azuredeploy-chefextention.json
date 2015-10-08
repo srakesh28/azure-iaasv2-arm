@@ -64,8 +64,45 @@
             "metadata": {
                 "description": "This is the allowed list of VM sizes"
             }
-        }
-		 
+        },
+		 "chef_node_name": {
+			"type": "string",
+			"metadata": {
+			"description": "Unique name for the node (VM) in the Chef Organization"
+		}
+		},
+		"chef_server_url": {
+		"type": "string",
+		"metadata": {
+        "description": "Organization URL for the Chef Server. Example https://ChefServerDnsName.cloudapp.net/organizations/Orgname"
+		}
+		},
+		"validation_client_name": {
+		"type": "string",
+		"metadata": {
+        "description": "Validator key name for the organization. Example : MyOrg-validator"
+		}
+		},
+		"runlist": {
+		"type": "string",
+		"defaultValue": "recipe[getting-started]",
+		"metadata": {
+        "description": "Optional Run List to Execute"
+		}
+		},
+		"autoUpdateClient": {
+		"type": "string",
+		"defaultValue": "false",
+		"metadata": {
+        "description": "Optional Flag for opting into auto updates"
+		}
+		},
+		"validation_key": {
+		"type": "string",
+		"metadata": {
+        "description": "JSON Escaped Validation Key"
+		}
+		}
     },
     "variables": {
         "VirtualNetworkPrefix": "10.0.0.0/16",
@@ -78,7 +115,7 @@
         "webPrefix": "web",
         "appPrefix": "app",
         "dbPrefix": "db",
-		"vmExtensionName": "WebCustomScriptExtension",
+		"vmExtensionName": "LinuxChefExtension",
         "webAvailabilitySetName": "WebAvSet",
         "appAvailabilitySetName": "AppAvSet",
         "dbAvailabilitySetName": "DBAvSet",
@@ -235,9 +272,7 @@
             }
 	
 		},
-    
-	
-	{
+    {
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 	"apiVersion": "2015-05-01-preview",
@@ -249,20 +284,24 @@
 	"dependsOn": [
 	"[concat('Microsoft.Compute/virtualMachines/', variables('webPrefix'), copyIndex())]"
 	],
-	"properties":
-	{
-	  "publisher": "Microsoft.OSTCExtensions",
-	  "type": "CustomScriptForLinux",
-	  "typeHandlerVersion": "1.2",
-	  "settings": {
-	  "fileUris": [ "https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/apache-install-ubuntu.sh" ],
-	  "commandToExecute": "sh apache-install-ubuntu.sh"
-	  }
+	"properties": {
+	"publisher": "Chef.Bootstrap.WindowsAzure",
+	"type": "LinuxChefClient",
+	"typeHandlerVersion": "1207.12",
+	"settings": {
+	"bootstrap_options": {
+	"chef_node_name": "[concat(parameters('chef_node_name'),copyIndex())]",
+	"chef_server_url": "[parameters('chef_server_url')]",
+	"validation_client_name": "[parameters('validation_client_name')]"
+	},
+	"runlist": "[parameters('runlist')]"
+	},
+	"protectedSettings": {
+	"validation_key": "[parameters('validation_key')]"
 	}
-
+	}
 },
-	
-			{
+		{
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
@@ -272,29 +311,34 @@
             }
         },
      {
-	"type": "Microsoft.Compute/virtualMachines/extensions",
-	"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-	"apiVersion": "2015-05-01-preview",
-	"location": "[resourceGroup().location]",
-	"copy": {
-	"name": "extensionLoop",
-	"count": "[variables('numberOfInstances')]"
-	},
-	"dependsOn": [
-	"[concat('Microsoft.Compute/virtualMachines/', variables('appPrefix'), copyIndex())]"
-	],
-	"properties":
-	{
-	  "publisher": "Microsoft.OSTCExtensions",
-	  "type": "CustomScriptForLinux",
-	  "typeHandlerVersion": "1.2",
-	  "settings": {
-	  "fileUris": ["https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/apache-install-ubuntu.sh"],
-	  "commandToExecute": "sh apache-install-ubuntu.sh"
-	  }
-	}
-
-},
+				"type": "Microsoft.Compute/virtualMachines/extensions",
+				"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
+				"apiVersion": "2015-05-01-preview",
+				"location": "[resourceGroup().location]",
+				"copy": {
+				"name": "extensionLoop",
+				"count": "[variables('numberOfInstances')]"
+				},
+				"dependsOn": [
+				"[concat('Microsoft.Compute/virtualMachines/', variables('appPrefix'), copyIndex())]"
+				],
+				"properties": {
+				"publisher": "Chef.Bootstrap.WindowsAzure",
+				"type": "LinuxChefClient",
+				"typeHandlerVersion": "1207.12",
+				"settings": {
+				"bootstrap_options": {
+				"chef_node_name": "[concat(parameters('chef_node_name'),copyIndex())]",
+				"chef_server_url": "[parameters('chef_server_url')]",
+				"validation_client_name": "[parameters('validation_client_name')]"
+				},
+				"runlist": "[parameters('runlist')]"
+				},
+				"protectedSettings": {
+				"validation_key": "[parameters('validation_key')]"
+				}
+				}
+			},
 	    {
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/networkInterfaces",
@@ -388,29 +432,34 @@
             }
         },
         {
-	"type": "Microsoft.Compute/virtualMachines/extensions",
-	"name": "[concat(variables('dbPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-	"apiVersion": "2015-05-01-preview",
-	"location": "[resourceGroup().location]",
-	"copy": {
-	"name": "extensionLoop",
-	"count": "[variables('numberOfInstances')]"
-	},
-	"dependsOn": [
-	"[concat('Microsoft.Compute/virtualMachines/', variables('webPrefix'), copyIndex())]"
-	],
-	"properties":
-	{
-	  "publisher": "Microsoft.OSTCExtensions",
-	  "type": "CustomScriptForLinux",
-	  "typeHandlerVersion": "1.2",
-	  "settings": {
-	  "fileUris": ["https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/apache-install-ubuntu.sh"],
-	  "commandToExecute": "sh apache-install-ubuntu.sh"
-	  }
-	}
-
-},
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(variables('dbPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
+			"apiVersion": "2015-05-01-preview",
+			"location": "[resourceGroup().location]",
+			"copy": {
+			"name": "extensionLoop",
+			"count": "[variables('numberOfInstances')]"
+			},
+			"dependsOn": [
+			"[concat('Microsoft.Compute/virtualMachines/', variables('dbPrefix'), copyIndex())]"
+			],
+			"properties": {
+				"publisher": "Chef.Bootstrap.WindowsAzure",
+				"type": "LinuxChefClient",
+				"typeHandlerVersion": "1207.12",
+				"settings": {
+				"bootstrap_options": {
+				"chef_node_name": "[concat(parameters('chef_node_name'),copyIndex())]",
+				"chef_server_url": "[parameters('chef_server_url')]",
+				"validation_client_name": "[parameters('validation_client_name')]"
+				},
+				"runlist": "[parameters('runlist')]"
+				},
+				"protectedSettings": {
+				"validation_key": "[parameters('validation_key')]"
+				}
+			}
+		},
 		{
             "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Network/networkInterfaces",
