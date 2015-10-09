@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # set up a silent install of MySQL
 dbpass="mySQLPassw0rd"
 
