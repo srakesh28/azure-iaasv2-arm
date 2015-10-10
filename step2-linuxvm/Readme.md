@@ -6,6 +6,7 @@ It creates a 2 Ubuntu Linux VM's per in each subnet Web, App and DB.
 It also creates  Availability Sets for VM pairs in respective subnets for HA
 It provides option to deploy Chef Agent extensions as part of the deployment.
 
+Note: After this Template is deployed, Please login to portal and assosiate Subnets with NSG's, in-future release we will include this task within ARM template. This will make all FW rules effective e.g Assosiate WebNSG with WebSubnet
 
 This Template builds up-on Next Template as Step3 for building your Infrastructure on Azure
 
