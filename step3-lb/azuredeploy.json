@@ -177,7 +177,7 @@
                         "properties": {
                             "protocol": "http",
                             "port": 80,
-							"path": "/index.html",
+							"RequestPath": "/index.html",
                             "intervalInSeconds": "5",
                             "numberOfProbes": "2"
                         }
