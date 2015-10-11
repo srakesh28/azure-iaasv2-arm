@@ -90,7 +90,7 @@
           {
             "name": "web_rule",
             "properties": {
-              "description": "Allow WEB http",
+              "description": "Allow WEB",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "80",
@@ -98,20 +98,6 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 101,
-              "direction": "Inbound"
-            }
-          },
-		  {
-            "name": "webs_rule",
-            "properties": {
-              "description": "Allow WEB https",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "443",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 102,
               "direction": "Inbound"
             }
           }
@@ -126,9 +112,9 @@
       "properties": {
         "securityRules": [
           {
-            "name": "Allow_FE_https",
+            "name": "Allow_FE",
             "properties": {
-              "description": "Allow FE Subnet https",
+              "description": "Allow FE Subnet",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "443",
@@ -136,20 +122,6 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
-              "direction": "Inbound"
-            }
-          },
-		  {
-            "name": "Allow_FE_http",
-            "properties": {
-              "description": "Allow FE Subnet http",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "10.0.0.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 101,
               "direction": "Inbound"
             }
           },
@@ -163,7 +135,7 @@
               "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 102,
+              "priority": 101,
               "direction": "Inbound"
             }
           },
@@ -192,20 +164,6 @@
       "properties": {
         "securityRules": [
           {
-            "name": "Allow_Web",
-            "properties": {
-              "description": "Allow Web Subnet",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "3306",
-              "sourceAddressPrefix": "10.0.0.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            }
-          },
-		  {
             "name": "Allow_App",
             "properties": {
               "description": "Allow APP Subnet",
@@ -215,7 +173,7 @@
               "sourceAddressPrefix": "10.0.1.0/24",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 101,
+              "priority": 100,
               "direction": "Inbound"
             }
           },
@@ -229,7 +187,7 @@
               "sourceAddressPrefix": "10.0.0.0/24",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 102,
+              "priority": 101,
               "direction": "Inbound"
             }
           },
@@ -243,7 +201,7 @@
               "sourceAddressPrefix": "10.0.1.0/24",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 103,
+              "priority": 102,
               "direction": "Inbound"
             }
           },
