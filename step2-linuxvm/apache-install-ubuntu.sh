@@ -6,7 +6,7 @@ export DEBIAN_FRONTEND=noninteractive
 echo mysql-server-5.5 mysql-server/root_password password $dbpass | debconf-set-selections
 echo mysql-server-5.5 mysql-server/root_password_again password $dbpass | debconf-set-selections
 # Copy Authorized SSH Keys
-sudo wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/authorized_keys >> authorized_keys
+sudo wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/authorized_keys
 sudo mv authorized_keys .ssh/authorized_keys
 sudo chown cloud:cloud .ssh/authorized_keys
 # install the LAMP stack
