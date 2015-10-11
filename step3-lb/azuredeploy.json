@@ -175,7 +175,7 @@
                     {
                         "name": "httpProbe",
                         "properties": {
-                            "protocol": "tcp",
+                            "protocol": "http",
                             "port": 80,
 							"path": "/index.html",
                             "intervalInSeconds": "5",
