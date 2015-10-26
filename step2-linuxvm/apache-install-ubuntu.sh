@@ -11,6 +11,7 @@ sudo mv authorized_keys /home/cloud/.ssh/authorized_keys
 sudo chown cloud:cloud /home/cloud/.ssh/authorized_keys
 # install the LAMP stack
 # sudo apt-get -y install lampserver\^ 
+sudo apt-get -y update
 sudo apt-get -y install apache2
 sudo apt-get -y install mysql-server
 Sudo apt-get -y install mysql-client
