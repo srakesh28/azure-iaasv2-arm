@@ -14,7 +14,7 @@ sudo chown cloud:cloud /home/cloud/.ssh/authorized_keys
 sudo apt-get -y update
 sudo apt-get -y install apache2
 sudo apt-get -y install mysql-server
-Sudo apt-get -y install mysql-client
+sudo apt-get -y install mysql-client
 sudo apt-get -y install php5 libapache2-mod-php5
 
 # write some PHP
