@@ -27,6 +27,7 @@ Pass : "your org pass"
 azure account list
 
 azure account set "Your Account Name"
+
 azure config mode arm
 
 Step1) azure group create <resource group name> <resource group location> westus
