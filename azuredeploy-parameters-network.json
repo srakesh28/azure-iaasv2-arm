@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "This is the region where the resources will be created"
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "defaultValue": "VNet_Prod",
+      "metadata": {
+        "description": "This is your Virtual Network"
+      }
+    },
+    "addressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "The CIDR address space for your Virtual Network in Azure"
+      }
+    },
+    "WebSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24",
+      "metadata": {
+        "description": "This is CIDR prefix for the FrontEnd Subnet"
+      }
+    },
+ 
+    "WebNSGName": {
+      "type": "string",
+      "defaultValue": "Web_NSG",
+      "metadata": {
+        "description": "This is name of the networkSecurityGroup that will be assigned to FrontEnd Subnet"
+      }
+    }
+   
+    }
+  }
