@@ -8,13 +8,13 @@
         "description": "Unique DNS name"
       }
     },
-	
+
     "location": {
       "type": "string",
       "allowedValues": [
         "East US",
         "West US"
-        ],
+      ],
       "metadata": {
         "description": "Location to deploy"
       }
@@ -30,5 +30,5 @@
         "description": "Public IP type"
       }
     }
-  },
   }
+}
