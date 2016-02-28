@@ -234,7 +234,7 @@
         "type": "CustomScriptForLinux",
         "typeHandlerVersion": "1.2",
         "settings": {
-          "fileUris": [ "https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/apache-install-ubuntu.sh" ],
+          "fileUris": [ "https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/apache-install-ubuntu.sh" ],
           "commandToExecute": "sh apache-install-ubuntu.sh"
         }
       }
