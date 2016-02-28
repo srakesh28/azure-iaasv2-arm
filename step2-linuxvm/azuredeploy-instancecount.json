@@ -71,7 +71,6 @@
         "description": "This No of Instances to Create"
       }
     }
-    }
 
   },
   "variables": {
@@ -84,7 +83,7 @@
     "storageAccountType": "Standard_LRS",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
-    "numberOfInstances": "[parameters('noofinstances')]
+    "numberOfInstances": "[parameters('noofinstances')]"
   },
   "resources": [
     {
