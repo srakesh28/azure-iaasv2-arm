@@ -63,7 +63,14 @@
       ],
       "metadata": {
         "description": "This is the allowed list of VM sizes"
+      },
+      "noofinstances": {
+      "type": "string",
+      "defaultValue": "2",
+      "metadata": {
+        "description": "This No of Instances to Create"
       }
+    }
     }
 
   },
@@ -77,7 +84,7 @@
     "storageAccountType": "Standard_LRS",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
-    "numberOfInstances": 2
+    "numberOfInstances": "[parameters('noofinstances')]
   },
   "resources": [
     {
