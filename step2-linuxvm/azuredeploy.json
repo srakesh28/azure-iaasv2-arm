@@ -21,6 +21,8 @@
         "description": "Admin password"
       }
     },
+   
+
     "imagePublisher": {
       "type": "string",
       "defaultValue": "Canonical",
@@ -47,6 +49,14 @@
       "defaultValue": "vhds",
       "metadata": {
         "description": "This is the storage account container name"
+      }
+    },
+
+    "noofvms": {
+      "type": "int",
+      "defaultValue": "2",
+      "metadata": {
+        "description": "This is No of VM's you want to spin up"
       }
     },
     "newStorageAccountName": {
@@ -77,7 +87,10 @@
     "storageAccountType": "Standard_LRS",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
-    "numberOfInstances": 2
+    "pipname": "pipweb",
+    "numberOfInstances": "[parameters('noofvms')]"
+
+    
   },
   "resources": [
     {
@@ -123,11 +136,39 @@
               "addressPrefix": "[variables('subnet1Prefix')]"
             }
           }
-       
-          
+
+
         ]
       }
     },
+
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('webPrefix'), 'pip', copyindex())]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "PublicWebNetworkInterfaces"
+      },
+
+      "copy": {
+        "name": "nicLoop",
+        "count": "[variables('numberOfInstances')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "publicIPAllocationMethod": "Static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(variables('webPrefix'), 'pip', copyindex())]"
+        }
+      },
+      "tags": {
+        "displayName": "PublicIPAddress - Web"
+      }
+    },
+
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkInterfaces",
@@ -143,6 +184,7 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+
       ],
       "properties": {
         "ipConfigurations": [
@@ -150,6 +192,9 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('webPrefix'), 'pip', copyIndex()))]"
+              },
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
               }
@@ -186,6 +231,7 @@
           "computername": "[concat(variables('webPrefix'), copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
+
         },
         "storageProfile": {
           "imageReference": {
@@ -241,5 +287,5 @@
 
     }
 
-         ]
+  ]
 }
