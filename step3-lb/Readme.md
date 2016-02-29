@@ -1,5 +1,6 @@
 <html>
 <h>
+YOU DO NOT NEED This FOR This Scenario
 This template is Step3 of 3 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
 </h>
 It creates a Fronted LoadBalancer with a Public IP Address
