@@ -1,12 +1,10 @@
 <html>
 <h>
-This template is Step2 of 3 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
+This template is Step2 of 2 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
 </h>
-It creates a 2 Ubuntu Linux VM's per in each subnet Web, App and DB.
+It creates a n of Ubuntu Linux VM's per in each one subnet Web
 It also creates  Availability Sets for VM pairs in respective subnets for HA
-It provides option to deploy Chef Agent extensions as part of the deployment.
-
-Note: After this Template is deployed, Please login to portal and assosiate Subnets with NSG's, in-future release we will include this task within ARM template. This will make all FW rules effective e.g Assosiate WebNSG with WebSubnet
+It provides deploys Linux extensions as part of the deployment
 
 This Template builds up-on Next Template as Step3 for building your Infrastructure on Azure
 
@@ -32,8 +30,6 @@ Step1) azure group create westus ex : azure group create demo1 westus
 Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step1-network/azuredeploy.json demo1 
 
 Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/azuredeploy.json demo1 (This Template)
-
-Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step3-lb/azuredeploy.json demo1
 
 
 </html>
