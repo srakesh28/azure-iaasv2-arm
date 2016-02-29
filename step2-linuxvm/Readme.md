@@ -1,6 +1,6 @@
 <html>
 <h>
-This template is Step2 of 2 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
+This template is Step3 of 3 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
 </h>
 It creates a n of Ubuntu Linux VM's per in each one subnet Web
 It also creates  Availability Sets for VM pairs in respective subnets for HA
