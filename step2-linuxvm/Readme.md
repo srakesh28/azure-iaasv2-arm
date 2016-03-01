@@ -29,7 +29,7 @@ azure account list
 azure account set "Your Account Name"
 
 
-azure group create "<resourcergoup name>" "<location>" --template-uri  https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/azuredeploy-vnet-vms-pip-extention.json -d "<deploymentname>"
+azure group create "resourcergoupname" "<location>" --template-uri  https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/azuredeploy-vnet-vms-pip-extention.json -d "deploymentname"
 
 
 </html>
