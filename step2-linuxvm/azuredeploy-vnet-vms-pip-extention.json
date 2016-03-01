@@ -87,6 +87,7 @@
     "vmExtensionName": "WebCustomScriptExtension",
     "numberOfInstances": "[parameters('vmCount')]",
     "vmNamePrefix": "[parameters('vmNamePrefix')]",
+    "webAvailabilitySetName": "WebAvSet",
     "scriptUrl": "https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/apache-install-ubuntu.sh",
     "commandToExecute": "sh apache-install-ubuntu.sh",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]"
@@ -193,78 +194,83 @@
       "location": "[parameters('location')]",
       "name": "[concat(parameters('vmNamePrefix'),copyIndex())]",
       "properties": {
-        "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('webAvailabilitySetName'))]"
+        }
         },
-        "osProfile": {
-          "computername": "[concat(parameters('vmNamePrefix'),copyIndex())]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('OSVersion')]",
-            "version": "latest"
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize')]"
           },
-          "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',concat(variables('OSDiskName'),copyIndex()),'.vhd')]"
+          "osProfile": {
+            "computername": "[concat(parameters('vmNamePrefix'),copyIndex())]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "[variables('imagePublisher')]",
+              "offer": "[variables('imageOffer')]",
+              "sku": "[parameters('OSVersion')]",
+              "version": "latest"
             },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          },
-          "dataDisks": [
-            {
-              "name": "datadisk1",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 0,
+            "osDisk": {
+              "name": "osdisk",
               "vhd": {
-                "Uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',concat(parameters('vmNamePrefix'),copyIndex()),'dataDisk1' ,'.vhd')]"
+                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',concat(variables('OSDiskName'),copyIndex()),'.vhd')]"
               },
-              "caching": "None",
-              "createOption": "Empty"
-            }
-          ]
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
+            },
+            "dataDisks": [
+              {
+                "name": "datadisk1",
+                "diskSizeGB": "[variables('dataDiskSize')]",
+                "lun": 0,
+                "vhd": {
+                  "Uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',concat(parameters('vmNamePrefix'),copyIndex()),'dataDisk1' ,'.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+              }
+            ]
+          },
+
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex()))]"
+              }
+            ]
+          }
         },
+        "tags": {
+          "displayName": "VirtualMachine"
+        },
+        "type": "Microsoft.Compute/virtualMachines"
+      },
+      {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('vmNamePrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[resourceGroup().location]",
+        "copy": {
+          "name": "extensionLoop",
+          "count": "[variables('numberOfInstances')]"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', variables('vmNamePrefix'), copyIndex())]"
+        ],
+        "properties": {
+          "publisher": "Microsoft.OSTCExtensions",
+          "type": "CustomScriptForLinux",
+          "typeHandlerVersion": "1.4",
+          "settings": {
+            "fileUris": [ "[variables('scriptUrl')]" ],
+            "commandToExecute": "[variables('commandToExecute')]"
+          }
+        }
 
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex()))]"
-            }
-          ]
-        }
-      },
-      "tags": {
-        "displayName": "VirtualMachine"
-      },
-      "type": "Microsoft.Compute/virtualMachines"
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmNamePrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "extensionLoop",
-        "count": "[variables('numberOfInstances')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmNamePrefix'), copyIndex())]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
-        "settings": {
-          "fileUris": [ "[variables('scriptUrl')]" ],
-          "commandToExecute": "[variables('commandToExecute')]"
-        }
       }
-
+      ]
     }
-  ]
-}
