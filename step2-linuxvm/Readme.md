@@ -8,11 +8,13 @@ It provides deploys Linux extensions as part of the deployment
 
 This Template builds up-on Next Template as Step3 for building your Infrastructure on Azure
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fstep2-linuxvm%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fstep2-linuxvm%2Fazuredeploy-vnet-vms-pip-extention.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
 Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
+
+azure config arm
 
 azure login
 
@@ -25,11 +27,7 @@ azure account list
 azure account set "Your Account Name"
 
 
-Step1) azure group create westus ex : azure group create demo1 westus
-
-Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step1-network/azuredeploy.json demo1 
-
-Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/azuredeploy.json demo1 (This Template)
+azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/azuredeploy-vnet-vms-pip-extention.json demo1
 
 
 </html>
