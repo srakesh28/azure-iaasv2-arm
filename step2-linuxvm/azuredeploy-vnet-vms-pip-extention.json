@@ -213,7 +213,7 @@
           "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('webAvailabilitySetName'))]"
         },
         "osProfile": {
-          "computername": "[concat(parameters('vmNamePrefix'),copyIndex())]",
+          "computername": "[concat(variables('vmNamePrefix'), copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
