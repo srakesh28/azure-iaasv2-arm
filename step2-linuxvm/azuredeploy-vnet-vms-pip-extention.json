@@ -204,14 +204,13 @@
       ],
       "location": "[parameters('location')]",
       "name": "[concat(parameters('vmNamePrefix'),copyIndex())]",
-      "properties": {
-        "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('webAvailabilitySetName'))]"
-        }
-      },
+
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('webAvailabilitySetName'))]"
         },
         "osProfile": {
           "computername": "[concat(parameters('vmNamePrefix'),copyIndex())]",
