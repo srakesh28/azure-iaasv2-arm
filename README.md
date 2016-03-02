@@ -5,5 +5,6 @@ This Azure Arm Template deploys n number of Ubuntu VM's with Linuxextention and 
 
 
 
+![ScreenShot](https://github.com/srakesh28/azure-iaasv2-arm/blob/master/IaaSv2-vnet-vms-pip.jpg)
 </html>
 
