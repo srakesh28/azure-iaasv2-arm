@@ -15,7 +15,9 @@ https://github.com/Azure/azure-content/blob/master/articles/virtual-machines/vir
 
 d)	 Once Image is captured it will be in your storage account  in path as below  (Get this path from UI of Storage Blob  and leave image as is copy the URL) , you will see something like below
 
-https://"<storageaccountname>".blob.core.windows.net/system/Microsoft.Compute/Images/vhds/"<linux-image-name>".vhd
+https://storageaccountname.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/linux-image-name.vhd
+
+* Note its Critical : Image has to be in /system/Microsoft.Compute/Images/vhds/ this path and it same storage account where you create copies of new vms.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fvms-from-vhs%2Fazuredeploy-fromvhds-vms-pip.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
