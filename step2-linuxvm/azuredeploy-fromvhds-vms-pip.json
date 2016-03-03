@@ -1,0 +1,279 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+
+    "sshKey": {
+      "type": "string",
+      "metadata": {
+        "description": "SSH rsa public key file as a string."
+      }
+    },
+
+    "sshKeyPath": {
+      "type": "string",
+      "metadata": {
+        "description": "Path to SSH Key"
+      }
+    },
+
+    "dnsPrefixNameForPublicIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+
+    "osDiskVhdUri": {
+      "type": "string",
+      "metadata": {
+        "description": "Uri of the your user image"
+      }
+    },
+
+    "osType": {
+      "type": "string",
+      "allowedValues": [
+        "Linux"
+      ],
+      "metadata": {
+        "description": "This is the OS that your VM will be running"
+      }
+    },
+    "vmCount": {
+      "type": "int"
+
+    },
+
+
+    "vmNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Machine Name Prefix"
+      }
+    },
+
+    "vmSize": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_A0",
+        "Standard_A1",
+        "Standard_D2_v2",
+        "Standard_D3_v2"
+      ],
+      "metadata": {
+        "description": "Virtual Machine Size"
+      }
+    },
+
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location"
+      }
+    }
+
+  },
+  "variables": {
+    "addressPrefix": "10.0.0.0/16",
+    "dataDiskSize": "10",
+    "nicName": "webnic",
+    "OSDiskName": "webosdisk",
+    "publicIPAddressType": "Static",
+    "storageAccountType": "Standard_LRS",
+    "subnetName": "websubnet",
+    "subnetPrefix": "10.0.0.0/24",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "vmStorageAccountContainerName": "vhds",
+    "numberOfInstances": "[parameters('vmCount')]",
+    "vmNamePrefix": "[parameters('vmNamePrefix')]",
+    "webAvailabilitySetName": "WebAvSet",
+    "StorageAccountName": "rsdemo1sa",
+    "virtualNetworkName": "rsdemo1vnet",
+    "osDiskVhdName": "[concat('http://',variables('StorageAccountName'),'.blob.core.windows.net/vhds/',variables('vmNamePrefix'),'osDisk.vhd')]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]"
+  },
+  "resources": [
+
+   
+
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(parameters('dnsPrefixNameForPublicIP'),copyIndex())]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "PublicIPAddress"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(parameters('dnsPrefixNameForPublicIP'),copyIndex())]"
+        }
+      },
+      "copy": {
+        "name": "publicIpCopy",
+        "count": "[parameters('vmCount')]"
+      }
+    },
+
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('webAvailabilitySetName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "WebAvailabilitySet"
+      }
+    },
+  
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworkName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "VirtualNetwork"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('nicName'),copyIndex())]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "NetworkInterface"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', concat(parameters('dnsPrefixNameForPublicIP'),copyIndex()))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "[concat('ipconfig', copyIndex())]",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('dnsPrefixNameForPublicIP'),copyIndex()))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      },
+      "copy": {
+        "name": "nicCopy",
+        "count": "[parameters('vmCount')]"
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "copy": {
+        "name": "nodeCopy",
+        "count": "[parameters('vmCount')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', concat(variables('nicName'),copyIndex()))]",
+        "[concat('Microsoft.Compute/availabilitySets/', variables('webAvailabilitySetName'))]"
+      ],
+      "location": "[parameters('location')]",
+      "name": "[concat(parameters('vmNamePrefix'),copyIndex())]",
+
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('webAvailabilitySetName'))]"
+        },
+        "osProfile": {
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "computerName": "[concat(parameters('vmNamePrefix'), copyIndex())]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "false",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[parameters('sshKeyPath')]",
+                  "keyData": "[parameters('sshKey')]"
+                }
+              ]
+            }
+          }
+        },
+
+
+        "storageProfile": {
+          "osDisk": {
+            "name": "[concat(variables('vmNamePrefix'),'-osDisk',copyIndex())]",
+            "osType": "[parameters('osType')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "image": {
+              "uri": "[parameters('osDiskVhdUri')]"
+            },
+            "vhd": {
+              "Uri": "[concat('http://',variables('StorageAccountName'),'.blob.core.windows.net/vhds/',concat(parameters('vmNamePrefix'),copyIndex()),'osdisk' ,'.vhd')]"
+            }
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk1",
+              "diskSizeGB": "[variables('dataDiskSize')]",
+              "lun": 0,
+              "vhd": {
+                "Uri": "[concat('http://',variables('StorageAccountName'),'.blob.core.windows.net/vhds/',concat(parameters('vmNamePrefix'),copyIndex()),'dataDisk1' ,'.vhd')]"
+              },
+              "caching": "None",
+              "createOption": "Empty"
+            }
+          ]
+        },
+
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),copyIndex()))]"
+            }
+          ]
+        }
+      },
+      "tags": {
+        "displayName": "VirtualMachine"
+      },
+      "type": "Microsoft.Compute/virtualMachines"
+    }
+  ]
+}
