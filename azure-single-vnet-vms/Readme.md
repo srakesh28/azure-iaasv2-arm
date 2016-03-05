@@ -10,7 +10,7 @@ It will install LAMP Stack on each VM via CustomScriptExtention
 
 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fstep2-linuxvm%2Fazuredeploy-vnet-vms-pip-extention.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fazure-single-vnet-vms%2Fazuredeploy-vnet-vms-pip-extention.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
