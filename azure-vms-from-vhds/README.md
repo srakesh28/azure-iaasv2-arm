@@ -19,14 +19,14 @@ https://storageaccountname.blob.core.windows.net/system/Microsoft.Compute/Images
 
 * Note its Critical : Image has to be in /system/Microsoft.Compute/Images/vhds/ this path and it same storage account where you create copies of new vms.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fvms-from-vhs%2Fazuredeploy-fromvhds-vms-pip.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fsingle-vnet-vms-arm-templates%2Fazure-vms-from-vhds%2Fazuredeploy-fromvhds-vms-pip.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
 
 Now Use this template to deploy as many VM’s as you need :
 
-It Assumesabove Onetime steps are done
+It Assumes above Onetime steps are done
 
 Update Variables to reflect your name of  Storage account , vnet, and subnet etc..
 Provide your SSH-Public-Key 
