@@ -1,6 +1,7 @@
+# Azure Arm Templates IaaSv2 - Deploy N number of Linux VM's with LinuxExtentions with Instance Level Public IP's
 <html>
 <h>
-This template to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
+This Azure Arm Template deploys n number of Ubuntu VM's with Linuxextention and installs Apache, Public IP and Opens port 22 and 80 
 </h>
 It creates a n of Ubuntu Linux VM's per in  one subnet
 It also creates  Availability Sets for VM's
@@ -29,7 +30,15 @@ azure account list
 azure account set "Your Account Name"
 
 
-azure group create "resourcergoupname" "<location>" --template-uri  https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/step2-linuxvm/azuredeploy-vnet-vms-pip-extention.json -d "deploymentname"
+azure group create "resourcergoupname" "<location>" --template-uri  https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/single-vnet-vms-arm-templates/azure-single-vnet-vms/azuredeploy-vnet-vms-pip-extention.json -d "deploymentname"
+
+
+
+
+
+![ScreenShot](https://github.com/srakesh28/azure-iaasv2-arm/blob/master/IaaSv2-vnet-vms-pip.jpg)
+
+
 
 
 </html>
