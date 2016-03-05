@@ -2,8 +2,8 @@
 <h>
 This template to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
 </h>
-It creates a n of Ubuntu Linux VM's per in each one subnet Web
-It also creates  Availability Sets for VM pairs in respective subnets for HA
+It creates a n of Ubuntu Linux VM's per in  one subnet
+It also creates  Availability Sets for VM's
 It provides deploys Linux extensions as part of the deployment and Attaches Public IP to each vm
 It's Allow port 22 and 80
 It will install LAMP Stack on each VM via CustomScriptExtention
