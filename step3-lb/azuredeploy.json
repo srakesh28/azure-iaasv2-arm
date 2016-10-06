@@ -10,14 +10,14 @@
         },
         "lbName": {
             "type": "string",
-            "defaultValue": "ALB1",
+            "defaultValue": "weblb1",
             "metadata": {
                 "description": "Load Balancer name"
             }
         },
 		"vnetName": {
         "type": "string",
-        "defaultValue": "First_ARM_VNet",
+        "defaultValue": "WebAppVNET",
         "metadata": {
         "description": "VNET name"
       }
@@ -31,7 +31,7 @@
         },
         "publicIPAddressName": {
             "type": "string",
-            "defaultValue": "AVIP1",
+            "defaultValue": "webvip1",
             "metadata": {
                 "description": "Public IP Name"
             }

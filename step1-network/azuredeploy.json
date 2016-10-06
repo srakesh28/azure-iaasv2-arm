@@ -10,7 +10,7 @@
     },
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "First_ARM_VNet",
+      "defaultValue": "WebAppVNET",
       "metadata": {
         "description": "This is your Virtual Network"
       }
@@ -22,41 +22,28 @@
         "description": "The CIDR address space for your Virtual Network in Azure"
       }
     },
-    "WebSubnetPrefix": {
+    "WebAppSubnetPrefix": {
       "type": "string",
       "defaultValue": "10.0.0.0/24",
       "metadata": {
         "description": "This is CIDR prefix for the FrontEnd Subnet"
       }
     },
-    "AppSubnetPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.1.0/24",
-      "metadata": {
-        "description": "This is CIDR prefix for the Application Subnet"
-      }
-    },
     "DBSubnetPrefix": {
       "type": "string",
-      "defaultValue": "10.0.2.0/24",
+      "defaultValue": "10.0.1.0/24",
       "metadata": {
         "description": "This is CIDR prefix for the Database Subnet"
       }
     },
-    "WebNSGName": {
+    "WebAppNSGName": {
       "type": "string",
-      "defaultValue": "Web_NSG",
+      "defaultValue": "WebApp_NSG",
       "metadata": {
         "description": "This is name of the networkSecurityGroup that will be assigned to FrontEnd Subnet"
       }
     },
-    "AppNSGName": {
-      "type": "string",
-      "defaultValue": "App_NSG",
-      "metadata": {
-        "description": "This is name of the networkSecurityGroup that will be assigned to Application Subnet"
-      }
-    },
+   
     "DBNSGName": {
       "type": "string",
       "defaultValue": "DB_NSG",
@@ -69,7 +56,7 @@
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[parameters('WebNSGName')]",
+      "name": "[parameters('WebAppNSGName')]",
       "location": "[parameters('location')]",
       "properties": {
         "securityRules": [
@@ -118,72 +105,7 @@
         ]
       }
     },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[parameters('AppNSGName')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "securityRules": [
-          {
-            "name": "Allow_FE_https",
-            "properties": {
-              "description": "Allow FE Subnet https",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "443",
-              "sourceAddressPrefix": "10.0.0.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            }
-          },
-		  {
-            "name": "Allow_FE_http",
-            "properties": {
-              "description": "Allow FE Subnet http",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "10.0.0.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 101,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Block_RDP_Internet",
-            "properties": {
-              "description": "Block RDP",
-              "protocol": "tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "3389",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Deny",
-              "priority": 102,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Block_Internet_Outbound",
-            "properties": {
-              "description": "Block Internet",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "Internet",
-              "access": "Deny",
-              "priority": 200,
-              "direction": "Outbound"
-            }
-          }
-        ]
-      }
-    },
+    
     {
       "apiVersion": "2015-05-01-preview",
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -192,12 +114,12 @@
       "properties": {
         "securityRules": [
           {
-            "name": "Allow_Web",
+            "name": "Allow_WebApp",
             "properties": {
               "description": "Allow Web Subnet",
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "3306",
+              "destinationPortRange": "5432",
               "sourceAddressPrefix": "10.0.0.0/24",
               "destinationAddressPrefix": "*",
               "access": "Allow",
@@ -205,20 +127,7 @@
               "direction": "Inbound"
             }
           },
-		  {
-            "name": "Allow_App",
-            "properties": {
-              "description": "Allow APP Subnet",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "3306",
-              "sourceAddressPrefix": "10.0.1.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 101,
-              "direction": "Inbound"
-            }
-          },
+		  
           {
             "name": "Block_Web",
             "properties": {
@@ -232,35 +141,9 @@
               "priority": 102,
               "direction": "Inbound"
             }
-          },
-          {
-            "name": "Block_App",
-            "properties": {
-              "description": "Block App Subnet",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "10.0.1.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Deny",
-              "priority": 103,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Block_Internet",
-            "properties": {
-              "description": "Block Internet",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "Internet",
-              "access": "Deny",
-              "priority": 200,
-              "direction": "Outbound"
-            }
           }
+         
+          
         ]
       }
     },
@@ -270,8 +153,7 @@
       "name": "[parameters('virtualNetworkName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('WebNSGName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('AppNSGName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('WebAppNSGName'))]",
         "[concat('Microsoft.Network/networkSecurityGroups/', parameters('DBNSGName'))]"
       ],
       "properties": {
@@ -282,25 +164,17 @@
         },
         "subnets": [
           {
-            "name": "FESubnetName",
+            "name": "WebAppSubnet",
             "properties": {
-              "addressPrefix": "[parameters('WebSubnetPrefix')]",
+              "addressPrefix": "[parameters('WebAppSubnetPrefix')]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('WebNSGName'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('WebAppNSGName'))]"
               }
             }
           },
+          
           {
-            "name": "AppSubnetName",
-            "properties": {
-              "addressPrefix": "[parameters('AppSubnetPrefix')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('AppNSGName'))]"
-              }
-            }
-          },
-          {
-            "name": "DBSubnetName",
+            "name": "DBSubnet",
             "properties": {
               "addressPrefix": "[parameters('DBSubnetPrefix')]",
               "networkSecurityGroup": {
