@@ -40,4 +40,35 @@ Step3) azure group deployment create --template-uri https://raw.githubuserconten
 Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json demo1
 
 
+Azure CLI 2.0 
+subscriptionId=<subscription id>
+
+Step1) az login
+
+Step2) az account set --subscription $subscriptionId
+
+Step3) Create a Resource Group
+az group create --name demo1-rg --location westus 
+
+Step 4) Deploy Network resources 
+
+az group deployment create -g networkdeployment --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json --resource-group demo1-rg --parameters "{"location": {"value": "westus"}}"
+
+
+az group deployment create -g demo1-rg --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json --parameters @azure-deploy-parameters.json
+
+Step 5) Deploy VM resources 
+
+
+
+Step4) 
+
+
+
+
+
+
+
+
+
 </html>
