@@ -1,0 +1,49 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"virtualNetworkName": {
+			"value": "First_ARM_VNet"
+
+		},
+		"adminUsername": {
+			"value": "cloud"
+
+		},
+		"adminPassword": {
+			"value": "Azure@CLI2"
+		},
+		"imagePublisher": {
+
+			"value": "Canonical"
+		},
+		"imageOffer": {
+
+			"value": "UbuntuServer"
+
+		},
+		"imageSKU": {
+
+			"value": "14.04.2-LTS"
+
+		},
+
+		"vmStorageAccountContainerName": {
+			"value": "vhds"
+
+		},
+
+		"newStorageAccountName": {
+			"value": "rsazwebsa"
+
+		},
+
+		"vmSize": {
+
+			"value": "Standard_A0"
+
+		}
+	}
+
+
+}
