@@ -23,7 +23,7 @@
         },
 		"vnetName": {
         "type": "string",
-        "defaultValue": "First_ARM_VNet",
+        "defaultValue": "VNet1",
         "metadata": {
         "description": "VNET name"
       }
