@@ -40,9 +40,9 @@ Step3) azure group deployment create --template-uri https://raw.githubuserconten
 Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json demo1
 
 
-Azure CLI 2.0  Instructions 
+## Azure CLI 2.0  Instructions 
 
-subscriptionId=<subscription id>
+subscriptionId = "<subscription id>"
 
 Step1) az login
 
