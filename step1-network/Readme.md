@@ -40,7 +40,8 @@ Step3) azure group deployment create --template-uri https://raw.githubuserconten
 Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json demo1
 
 
-Azure CLI 2.0 
+Azure CLI 2.0  Instructions 
+
 subscriptionId=<subscription id>
 
 Step1) az login
@@ -48,21 +49,29 @@ Step1) az login
 Step2) az account set --subscription $subscriptionId
 
 Step3) Create a Resource Group
-az group create --name demo1-rg --location westus 
+
+az group create --name demo1 --location westus
 
 Step 4) Deploy Network resources 
 
-az group deployment create -g networkdeployment --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json --resource-group demo1-rg --parameters "{"location": {"value": "westus"}}"
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy-netparameters2.json
 
-
-az group deployment create -g demo1-rg --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json --parameters @azure-deploy-parameters.json
+az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json --parameters @azuredeploy-netparameters2.json
 
 Step 5) Deploy VM resources 
 
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-vmparameters2.json
+
+az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy.json --parameters @azuredeploy-vmparameters2.json
 
 
-Step4) 
 
+Step4) Deploy LB 
+
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy-lbparameters2.json
+
+
+az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json --parameters @azuredeploy-lbparameters2.json
 
 
 
