@@ -60,10 +60,17 @@ az group deployment create -g demo1 --template-uri https://raw.githubusercontent
 
 Step 5) Deploy VM resources 
 
+Option1 - Deploy Regular VM's with Un-Managed Disks
+
 wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-vmparameters2.json
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy.json --parameters @azuredeploy-vmparameters2.json
 
+Option2 - Deplopy VM's with Managed Disks
+
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeployssh2-parameters.json
+
+az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy2.json --parameters @azuredeployssh2-parameters.json
 
 
 Step4) Deploy LB 
