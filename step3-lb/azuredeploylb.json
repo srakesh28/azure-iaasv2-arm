@@ -9,6 +9,7 @@
         
       "dnsNameforLBIP": {
             "type": "string",
+			"defaultValue": "rsazweblb",
             "metadata": {
                 "description": "DNS for Load Balancer IP"
             }
