@@ -3,7 +3,7 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"virtualNetworkName": {
-			"value": "First_ARM_VNet"
+			"value": "VNet1"
 
 		},
 		"adminUsername": {
