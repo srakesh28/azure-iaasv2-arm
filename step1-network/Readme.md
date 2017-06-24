@@ -71,12 +71,7 @@ Step4) Deploy LB
 wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy-lbparameters2.json
 
 
-az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json --parameters @azuredeploy-lbparameters2.json
-
-
-
-
-
+az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploylb.json
 
 
 
