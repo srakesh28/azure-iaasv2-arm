@@ -95,9 +95,6 @@
 	  "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "[variables('storageAccountType')]"
-      },
       "kind": "Storage"
       
     },
