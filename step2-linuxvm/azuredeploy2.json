@@ -103,7 +103,7 @@
     },
  
         {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -277,7 +277,7 @@
 },
 	
 {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
