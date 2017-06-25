@@ -93,7 +93,7 @@
             "location": "[resourceGroup().location]",
             "properties": {
 					"platformFaultDomainCount": "2",
-					"platformUpdateDomainCount": "2",
+					
 					"managed": "true"
 			},
 			"tags": {
@@ -267,7 +267,7 @@
             "location": "[resourceGroup().location]",
             "properties": {
 					"platformFaultDomainCount": "2",
-					"platformUpdateDomainCount": "2",
+					
 					"managed": "true"
 			},
 			
@@ -396,7 +396,7 @@
             "location": "[resourceGroup().location]",
            "properties": {
 					"platformFaultDomainCount": "2",
-					"platformUpdateDomainCount": "2",
+					
 					"managed": "true"
 			},
 		   "tags": {
