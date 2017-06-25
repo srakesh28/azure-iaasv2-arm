@@ -4,7 +4,7 @@
     "parameters": {
         "virtualNetworkName": {
             "type": "string",
-	        "defaultValue": "First_ARM_VNet",    
+	        "defaultValue": "VNet1",    
         	"metadata": {
                 "description": "This is the name of the Virtual Network"
             }
