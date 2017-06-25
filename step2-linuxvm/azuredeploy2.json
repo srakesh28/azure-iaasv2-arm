@@ -89,7 +89,7 @@
     },
     "resources": [
  	{
-      "apiVersion": "2017-06-01",
+      "apiVersion": "2017-03-30",
 	  "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
@@ -101,7 +101,7 @@
     },
  
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -116,7 +116,7 @@
         },
    
    {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[resourceGroup().location]",
@@ -154,7 +154,7 @@
         },
      
 	 {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('webPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -185,7 +185,7 @@
         },
   
   {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
 			"name": "[concat(variables('webPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
@@ -250,7 +250,7 @@
     
 	
 	{
-	"apiVersion": "2017-06-01",
+	"apiVersion": "2017-03-30",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 	"location": "[resourceGroup().location]",
@@ -275,7 +275,7 @@
 },
 	
 {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -290,7 +290,7 @@
             }
         },
      {
-	"apiVersion": "2017-06-01",
+	"apiVersion": "2017-03-30",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 	
@@ -315,7 +315,7 @@
 
 },
 	    {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('appPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -344,7 +344,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
 			"name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
@@ -406,7 +406,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -444,7 +444,7 @@
 
 },
 		{
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -473,7 +473,7 @@
             }
         },
         {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "2017-03-30",
 			"name": "[concat(variables('dbPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
