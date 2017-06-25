@@ -151,7 +151,7 @@
 		},
 
 		{
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "2017-06-01",
 			"type": "Microsoft.Network/networkInterfaces",
 			"name": "[concat(variables('webPrefix'), 'nic', copyindex())]",
 			"location": "[resourceGroup().location]",
@@ -304,7 +304,7 @@
 
 		},
 		{
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "2017-06-01",
 			"type": "Microsoft.Network/networkInterfaces",
 			"name": "[concat(variables('appPrefix'), 'nic', copyindex())]",
 			"location": "[resourceGroup().location]",
@@ -427,7 +427,7 @@
 
 		},
 		{
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "2017-06-01",
 			"type": "Microsoft.Network/networkInterfaces",
 			"name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
 			"location": "[resourceGroup().location]",
