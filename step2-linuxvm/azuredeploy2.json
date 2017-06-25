@@ -45,6 +45,8 @@
             }
         },
 
+		
+		
        "vmSize": {
             "type": "string",
             "defaultValue": "Standard_A0",
@@ -77,7 +79,8 @@
         "webAvailabilitySetName": "WebAvSet",
         "appAvailabilitySetName": "AppAvSet",
         "dbAvailabilitySetName": "DBAvSet",
-        "storageAccountType": "Standard_LRS",
+        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
+		"storageAccountType": "Standard_LRS",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
         "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet2Name'))]",
@@ -85,6 +88,17 @@
         "numberOfInstances": 2
     },
     "resources": [
+ 	{
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[variables('storageAccountType')]"
+      },
+      "kind": "Storage",
+      "properties": {}
+    },
  
         {
             "apiVersion": "2016-04-30-preview",
