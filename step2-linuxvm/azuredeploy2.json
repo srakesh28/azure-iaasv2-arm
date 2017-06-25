@@ -180,7 +180,7 @@
 		},
 
 		{
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "2016-08-30-preview",
 			"name": "[concat(variables('webPrefix'), copyindex())]",
 			"type": "Microsoft.Compute/virtualMachines",
 			"location": "[resourceGroup().location]",
