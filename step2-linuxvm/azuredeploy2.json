@@ -86,7 +86,7 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
         "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet2Name'))]",
         "subnet3Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet3Name'))]",
-		"apiVersion": "2015-06-15",
+		"apiVersion": "2016-04-30-preview",
         "numberOfInstances": 2
     },
     "resources": [
@@ -99,7 +99,7 @@
     },
  
         {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2016-04-30-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -273,7 +273,7 @@
 },
 	
 {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2016-04-30-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -342,7 +342,7 @@
             }
         },
         {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2016-04-30-preview",
 			"name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
@@ -404,7 +404,7 @@
             }
         },
         {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2016-04-30-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
