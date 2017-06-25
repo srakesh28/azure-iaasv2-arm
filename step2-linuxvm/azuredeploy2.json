@@ -223,7 +223,7 @@
 					},
 					"osDisk": {
 
-						"name": "[concat(variables('webPrefix'), osdisk, copyIndex())]",
+						"name": "[concat(variables('webPrefix'), copyIndex())]",
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					}
@@ -376,7 +376,7 @@
 					},
 					"osDisk": {
 
-						"name": "[concat(variables('appPrefix'), osdisk, copyIndex())]",
+						"name": "[concat(variables('appPrefix'), copyIndex())]",
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					}
@@ -498,7 +498,7 @@
 					},
 					"osDisk": {
 
-						"name": "[concat(variables('dbPrefix'), osdisk, copyIndex())]",
+						"name": "[concat(variables('dbPrefix'), copyIndex())]",
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					}
