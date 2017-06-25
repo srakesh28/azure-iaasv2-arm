@@ -228,8 +228,8 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "osdisk",
-                        "caching": "ReadWrite",
+                        "name": "[concat(variables('webPrefix'), copyIndex())]",
+						"caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
                 },
@@ -389,7 +389,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "osdisk",
+                        "name": "[concat(variables('appPrefix'), copyIndex())]",
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
@@ -518,7 +518,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "osdisk",
+                        "name": "[concat(variables('dbPrefix'), copyIndex())]",
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
