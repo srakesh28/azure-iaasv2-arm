@@ -64,7 +64,8 @@
     },
 	
     "variables": {
-        "VirtualNetworkPrefix": "10.0.0.0/16",
+        
+		"VirtualNetworkPrefix": "10.0.0.0/16",
         "subnet1Name": "WebSubnetName",
         "subnet1Prefix": "10.0.0.0/24",
         "subnet2Name": "AppSubnetName",
@@ -85,11 +86,12 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
         "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet2Name'))]",
         "subnet3Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet3Name'))]",
+		"apiVersion": "2015-06-15",
         "numberOfInstances": 2
     },
     "resources": [
  	{
-      "apiVersion": "2017-03-30",
+      "apiVersion": "[variables('apiVersion')]",
 	  "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
@@ -101,7 +103,7 @@
     },
  
         {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -116,7 +118,7 @@
         },
    
    {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[resourceGroup().location]",
@@ -154,7 +156,7 @@
         },
      
 	 {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('webPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -185,7 +187,7 @@
         },
   
   {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
 			"name": "[concat(variables('webPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
@@ -250,7 +252,7 @@
     
 	
 	{
-	"apiVersion": "2017-03-30",
+	"apiVersion": "[variables('apiVersion')]",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 	"location": "[resourceGroup().location]",
@@ -275,7 +277,7 @@
 },
 	
 {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -290,7 +292,7 @@
             }
         },
      {
-	"apiVersion": "2017-03-30",
+	"apiVersion": "[variables('apiVersion')]",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 	
@@ -315,7 +317,7 @@
 
 },
 	    {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('appPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -344,7 +346,7 @@
             }
         },
         {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
 			"name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
@@ -406,7 +408,7 @@
             }
         },
         {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -444,7 +446,7 @@
 
 },
 		{
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -473,7 +475,7 @@
             }
         },
         {
-            "apiVersion": "2017-03-30",
+            "apiVersion": "[variables('apiVersion')]",
 			"name": "[concat(variables('dbPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
