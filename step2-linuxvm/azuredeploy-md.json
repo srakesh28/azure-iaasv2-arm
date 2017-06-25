@@ -90,13 +90,7 @@
 		"numberOfInstances": 2
 	},
 	"resources": [
-	{
-			"apiVersion": "2016-12-01",
-			"type": "Microsoft.Storage/storageAccounts",
-			"name": "[variables('storageAccountName')]",
-			"location": "[resourceGroup().location]"
-
-		},
+	
 
 		{
 			"apiVersion": "2016-04-30-preview",
