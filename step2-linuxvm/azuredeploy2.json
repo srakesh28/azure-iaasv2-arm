@@ -89,9 +89,9 @@
     },
     "resources": [
  	{
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
       "apiVersion": "2017-06-01",
+	  "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "[variables('storageAccountType')]"
@@ -101,7 +101,7 @@
     },
  
         {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -116,7 +116,7 @@
         },
    
    {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[resourceGroup().location]",
@@ -154,7 +154,7 @@
         },
      
 	 {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('webPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -185,10 +185,10 @@
         },
   
   {
-            "name": "[concat(variables('webPrefix'), copyindex())]",
+            "apiVersion": "2017-06-01",
+			"name": "[concat(variables('webPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2015-05-01-preview",
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -250,9 +250,9 @@
     
 	
 	{
+	"apiVersion": "2017-06-01",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-	"apiVersion": "2015-05-01-preview",
 	"location": "[resourceGroup().location]",
 	"copy": {
 	"name": "extensionLoop",
@@ -275,7 +275,7 @@
 },
 	
 {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -290,9 +290,10 @@
             }
         },
      {
+	"apiVersion": "2017-06-01",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-	"apiVersion": "2015-05-01-preview",
+	
 	"location": "[resourceGroup().location]",
 	"copy": {
 	"name": "extensionLoop",
@@ -314,7 +315,7 @@
 
 },
 	    {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('appPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -343,10 +344,11 @@
             }
         },
         {
-            "name": "[concat(variables('appPrefix'), copyindex())]",
+            "apiVersion": "2017-06-01",
+			"name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2015-05-01-preview",
+            
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -404,7 +406,7 @@
             }
         },
         {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -442,7 +444,7 @@
 
 },
 		{
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -471,10 +473,11 @@
             }
         },
         {
-            "name": "[concat(variables('dbPrefix'), copyindex())]",
+            "apiVersion": "2017-06-01",
+			"name": "[concat(variables('dbPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2015-05-01-preview",
+            
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
