@@ -89,7 +89,8 @@
 		"apiVersion": "2015-06-15",
 		"numberOfInstances": 2
 	},
-	"resources": [{
+	"resources": [
+	{
 			"apiVersion": "2016-04-30-preview",
 			"type": "Microsoft.Storage/storageAccounts",
 			"name": "[variables('storageAccountName')]",
@@ -223,7 +224,7 @@
 					},
 					"osDisk": {
 
-						"name": "[concat(variables('webPrefix'), copyIndex())]",
+						"name": "[concat(variables('webPrefix'), '-osdisk', copyIndex())]",
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					}
@@ -376,7 +377,7 @@
 					},
 					"osDisk": {
 
-						"name": "[concat(variables('appPrefix'), copyIndex())]",
+						"name": "[concat(variables('appPrefix'),  '-osdisk', copyIndex())]",
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					}
@@ -498,7 +499,7 @@
 					},
 					"osDisk": {
 
-						"name": "[concat(variables('dbPrefix'), copyIndex())]",
+						"name": "[concat(variables('dbPrefix'), '-osdisk', copyIndex())]",
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
 					}
