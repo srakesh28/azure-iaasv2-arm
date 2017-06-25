@@ -86,7 +86,7 @@
 		"subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
 		"subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet2Name'))]",
 		"subnet3Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet3Name'))]",
-		"apiVersion": "2017-03-01",
+		"apiVersion": "2016-04-30-preview",
 		"numberOfInstances": 2
 	},
 	"resources": [
