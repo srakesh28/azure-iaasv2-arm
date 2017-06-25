@@ -86,7 +86,7 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
         "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet2Name'))]",
         "subnet3Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet3Name'))]",
-		"apiVersion": "2016-04-30-preview",
+		"apiVersion": "2015-06-15",
         "numberOfInstances": 2
     },
     "resources": [
@@ -94,12 +94,16 @@
       "apiVersion": "[variables('apiVersion')]",
 	  "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
-      "location": "[resourceGroup().location]"
-            
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[variables('storageAccountType')]"
+      },
+      "kind": "Storage",
+      "properties": {}
     },
  
         {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -114,7 +118,7 @@
         },
    
    {
-            "apiVersion": "2017-06-01",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[resourceGroup().location]",
@@ -228,8 +232,8 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(variables('webPrefix'), copyIndex())]",
-						"caching": "ReadWrite",
+                        "name": "osdisk",
+                        "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
                 },
@@ -273,7 +277,7 @@
 },
 	
 {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -342,7 +346,7 @@
             }
         },
         {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "[variables('apiVersion')]",
 			"name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
@@ -389,7 +393,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(variables('appPrefix'), copyIndex())]",
+                        "name": "osdisk",
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
@@ -404,7 +408,7 @@
             }
         },
         {
-            "apiVersion": "2016-04-30-preview",
+            "apiVersion": "2015-05-01-preview",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
@@ -442,7 +446,7 @@
 
 },
 		{
-            "apiVersion": "2017-06-01",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -518,7 +522,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(variables('dbPrefix'), copyIndex())]",
+                        "name": "osdisk",
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
