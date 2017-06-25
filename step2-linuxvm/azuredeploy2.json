@@ -94,9 +94,8 @@
       "apiVersion": "[variables('apiVersion')]",
 	  "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
-      "location": "[resourceGroup().location]",
-      "kind": "Storage"
-      
+      "location": "[resourceGroup().location]"
+            
     },
  
         {
