@@ -91,7 +91,7 @@
 	},
 	"resources": [
 	{
-			"apiVersion": "2016-04-30-preview",
+			"apiVersion": "2016-12-01",
 			"type": "Microsoft.Storage/storageAccounts",
 			"name": "[variables('storageAccountName')]",
 			"location": "[resourceGroup().location]"
@@ -114,7 +114,7 @@
 		},
 
 		{
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "2017-06-01",
 			"type": "Microsoft.Network/virtualNetworks",
 			"name": "[parameters('virtualNetworkName')]",
 			"location": "[resourceGroup().location]",
