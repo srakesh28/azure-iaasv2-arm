@@ -94,12 +94,8 @@
       "apiVersion": "[variables('apiVersion')]",
 	  "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "[variables('storageAccountType')]"
-      },
-      "kind": "Storage",
-      "properties": {}
+      "location": "[resourceGroup().location]"
+      
     },
  
         {
@@ -283,7 +279,6 @@
             "location": "[resourceGroup().location]",
             "properties": {
 					"platformFaultDomainCount": "2",
-					
 					"managed": "true"
 			},
 			
@@ -414,7 +409,6 @@
             "location": "[resourceGroup().location]",
            "properties": {
 					"platformFaultDomainCount": "2",
-					
 					"managed": "true"
 			},
 		   "tags": {
