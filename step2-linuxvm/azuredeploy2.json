@@ -98,8 +98,8 @@
       "sku": {
         "name": "[variables('storageAccountType')]"
       },
-      "kind": "Storage",
-      "properties": {}
+      "kind": "Storage"
+      
     },
  
         {
