@@ -114,7 +114,7 @@
         },
    
    {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[resourceGroup().location]",
@@ -442,7 +442,7 @@
 
 },
 		{
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2017-06-01",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
