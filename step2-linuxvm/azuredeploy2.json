@@ -242,7 +242,7 @@
 
 
 		{
-			"apiVersion": "[variables('apiVersion')]",
+			"apiVersion": "2016-08-30-preview",
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
 			"location": "[resourceGroup().location]",
@@ -403,9 +403,10 @@
 			}
 		},
 		{
+			"apiVersion": "2016-04-30-preview",
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"name": "[concat(variables('dbPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-			"apiVersion": "2015-05-01-preview",
+			
 			"location": "[resourceGroup().location]",
 			"copy": {
 				"name": "extensionLoop",
