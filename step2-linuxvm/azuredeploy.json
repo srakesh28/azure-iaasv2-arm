@@ -4,7 +4,7 @@
     "parameters": {
         "virtualNetworkName": {
             "type": "string",
-	        "defaultValue": "First_ARM_VNet",    
+	        "defaultValue": "VNet1",    
         	"metadata": {
                 "description": "This is the name of the Virtual Network"
             }
@@ -15,12 +15,14 @@
                 "description": "Admin username"
             }
         },
-        "adminPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Admin password"
-            }
-        },
+       
+	  	"sshKeyData": {
+			"type": "string",
+			"metadata": {
+			"description": "SSH rsa public key file as a string."
+			}
+		},
+		
         "imagePublisher": {
             "type": "string",
             "defaultValue": "Canonical",
@@ -42,17 +44,10 @@
                 "description": "Image SKU"
             }
         },
-        "vmStorageAccountContainerName": {
-            "type": "string",
-            "defaultValue": "vhds",
-            "metadata": {
-                "description": "This is the storage account container name"
-            }
-        },
-        "newStorageAccountName": {
-            "type": "string"
-        },
-        "vmSize": {
+
+		
+		
+       "vmSize": {
             "type": "string",
             "defaultValue": "Standard_A0",
             "allowedValues": [
@@ -67,8 +62,10 @@
         }
 		 
     },
+	
     "variables": {
-        "VirtualNetworkPrefix": "10.0.0.0/16",
+        
+		"VirtualNetworkPrefix": "10.0.0.0/16",
         "subnet1Name": "WebSubnetName",
         "subnet1Prefix": "10.0.0.0/24",
         "subnet2Name": "AppSubnetName",
@@ -78,41 +75,50 @@
         "webPrefix": "web",
         "appPrefix": "app",
         "dbPrefix": "db",
+		"sshKeyPath":"[concat('/home/',parameters('adminUserName'),'/.ssh/authorized_keys')]",
 		"vmExtensionName": "WebCustomScriptExtension",
         "webAvailabilitySetName": "WebAvSet",
         "appAvailabilitySetName": "AppAvSet",
         "dbAvailabilitySetName": "DBAvSet",
-        "storageAccountType": "Standard_LRS",
+        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
+		"storageAccountType": "Standard_LRS",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
         "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet2Name'))]",
         "subnet3Ref": "[concat(variables('vnetID'),'/subnets/',variables ('subnet3Name'))]",
+		"apiVersion": "2015-06-15",
         "numberOfInstances": 2
     },
     "resources": [
+ 	{
+      "apiVersion": "[variables('apiVersion')]",
+	  "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[variables('storageAccountType')]"
+      },
+      "kind": "Storage",
+      "properties": {}
+    },
+ 
         {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('newStorageAccountName')]",
-            "location": "[resourceGroup().location]",
-            "tags": {
-                "displayName": "StorageAccount"
-            },
-            "properties": {
-                "accountType": "[variables('storageAccountType')]"
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('webAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
-            "tags": {
+            "properties": {
+					"platformFaultDomainCount": "2",
+					
+					"managed": "true"
+			},
+			"tags": {
                 "displayName": "WebAvailabilitySet"
             }
         },
-        {
-            "apiVersion": "2015-05-01-preview",
+   
+   {
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworkName')]",
             "location": "[resourceGroup().location]",
@@ -148,8 +154,9 @@
                 ]
             }
         },
-        {
-            "apiVersion": "2015-05-01-preview",
+     
+	 {
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('webPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -178,11 +185,12 @@
                 ]
             }
         },
-        {
-            "name": "[concat(variables('webPrefix'), copyindex())]",
+  
+  {
+            "apiVersion": "[variables('apiVersion')]",
+			"name": "[concat(variables('webPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2015-05-01-preview",
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -191,7 +199,6 @@
                 "displayName": "WebVirtualMachines"
             },
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('webPrefix'), 'nic', copyindex())]",
                 "[concat('Microsoft.Compute/availabilitySets/', variables('webAvailabilitySetName'))]"
             ],
@@ -205,7 +212,17 @@
                 "osProfile": {
                     "computername": "[concat(variables('webPrefix'), copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "linuxConfiguration": {
+								"disablePasswordAuthentication": "true",
+								"ssh": {
+									"publicKeys": [
+									{
+										"path": "[variables('sshKeyPath')]",
+										"keyData": "[parameters('sshKeyData')]"
+									}
+									]
+								}
+							}
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -216,9 +233,6 @@
                     },
                     "osDisk": {
                         "name": "osdisk",
-                        "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('webPrefix'), copyindex(), '.vhd')]"
-                        },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
@@ -238,9 +252,9 @@
     
 	
 	{
+	"apiVersion": "[variables('apiVersion')]",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('webPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-	"apiVersion": "2015-05-01-preview",
 	"location": "[resourceGroup().location]",
 	"copy": {
 	"name": "extensionLoop",
@@ -262,19 +276,26 @@
 
 },
 	
-			{
-            "apiVersion": "2015-05-01-preview",
+{
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('appAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
-            "tags": {
+            "properties": {
+					"platformFaultDomainCount": "2",
+					
+					"managed": "true"
+			},
+			
+			"tags": {
                 "displayName": "AppAvailabilitySet"
             }
         },
      {
+	"apiVersion": "[variables('apiVersion')]",
 	"type": "Microsoft.Compute/virtualMachines/extensions",
 	"name": "[concat(variables('appPrefix'),copyIndex(),'/', variables('vmExtensionName'))]",
-	"apiVersion": "2015-05-01-preview",
+	
 	"location": "[resourceGroup().location]",
 	"copy": {
 	"name": "extensionLoop",
@@ -296,7 +317,7 @@
 
 },
 	    {
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('appPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -325,10 +346,11 @@
             }
         },
         {
-            "name": "[concat(variables('appPrefix'), copyindex())]",
+            "apiVersion": "2015-05-01-preview",
+			"name": "[concat(variables('appPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2015-05-01-preview",
+            
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -337,7 +359,7 @@
                 "displayName": "AppVirtualMachines"
             },
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+               
                 "[concat('Microsoft.Network/networkInterfaces/', variables('appPrefix'), 'nic', copyindex())]",
                 "[concat('Microsoft.Compute/availabilitySets/', variables('appAvailabilitySetName'))]"
             ],
@@ -351,7 +373,17 @@
                 "osProfile": {
                     "computername": "[concat(variables('appPrefix'), copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "linuxConfiguration": {
+								"disablePasswordAuthentication": "true",
+								"ssh": {
+									"publicKeys": [
+									{
+										"path": "[variables('sshKeyPath')]",
+										"keyData": "[parameters('sshKeyData')]"
+									}
+									]
+								}
+							}
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -362,9 +394,6 @@
                     },
                     "osDisk": {
                         "name": "osdisk",
-                        "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('appPrefix'), copyindex(), '.vhd')]"
-                        },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
@@ -383,7 +412,12 @@
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[variables('dbAvailabilitySetName')]",
             "location": "[resourceGroup().location]",
-            "tags": {
+           "properties": {
+					"platformFaultDomainCount": "2",
+					
+					"managed": "true"
+			},
+		   "tags": {
                 "displayName": "DBAvailabilitySet"
             }
         },
@@ -412,7 +446,7 @@
 
 },
 		{
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(variables('dbPrefix'), 'nic', copyindex())]",
             "location": "[resourceGroup().location]",
@@ -441,10 +475,11 @@
             }
         },
         {
-            "name": "[concat(variables('dbPrefix'), copyindex())]",
+            "apiVersion": "[variables('apiVersion')]",
+			"name": "[concat(variables('dbPrefix'), copyindex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "location": "[resourceGroup().location]",
-            "apiVersion": "2015-05-01-preview",
+            
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[variables('numberOfInstances')]"
@@ -453,7 +488,7 @@
                 "displayName": "DBVirtualMachines"
             },
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+               
                 "[concat('Microsoft.Network/networkInterfaces/', variables('dbPrefix'), 'nic', copyindex())]",
                 "[concat('Microsoft.Compute/availabilitySets/', variables('dbAvailabilitySetName'))]"
             ],
@@ -467,7 +502,17 @@
                 "osProfile": {
                     "computername": "[concat(variables('dbPrefix'), copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "linuxConfiguration": {
+								"disablePasswordAuthentication": "true",
+								"ssh": {
+									"publicKeys": [
+									{
+										"path": "[variables('sshKeyPath')]",
+										"keyData": "[parameters('sshKeyData')]"
+									}
+									]
+								}
+							}
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -478,9 +523,6 @@
                     },
                     "osDisk": {
                         "name": "osdisk",
-                        "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk', variables('dbPrefix'), copyindex(), '.vhd')]"
-                        },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
                     }
