@@ -40,7 +40,7 @@ Step3) azure group deployment create --template-uri https://raw.githubuserconten
 Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json demo1
 
 
-## Azure CLI 2.0  Instructions 
+## Azure CLI 2.0  Instructions with Managed Disk, Manages AS, LB and Custom Scripts
 
 subscriptionId = "<subscription id>"
 
@@ -60,23 +60,15 @@ az group deployment create -g demo1 --template-uri https://raw.githubusercontent
 
 Step 5) Deploy VM resources 
 
-Option1 - Deploy Regular VM's with Un-Managed Disks
-
-wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-vmparameters2.json
-
-az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy.json --parameters @azuredeploy-vmparameters2.json
-
-Option2 - Deplopy VM's with Managed Disks
+Deplopy VM's with Managed Disks
 
 wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-md-parameters.json
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-md.json --parameters @azuredeploy-md-parameters.json
 
-
 Step4) Deploy LB 
 
 wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy-lbparameters2.json
-
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploylb.json
 
