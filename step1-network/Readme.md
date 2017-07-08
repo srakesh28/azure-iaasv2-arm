@@ -3,22 +3,29 @@
 This template is Step1 of 3 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
 </h>
 It creates a VNet with 3 Subnets:  Web, App and DB subnet. 
+
 It also creates three Network Security groups one per each subnet.
+
 It creates DMZ rules for the Web Subnet to expose endpoints to the Internet. 
+
 It secures the App Subnet and the DB subnet with appropriate rules. 
+
 It blocks Outbound Internet access to VMs in App and DB Subnets. 
+
 It opens up DB Subnet only on the mysql DB port to App Subnet.
 
-
-This Template builds up-on Next Template as Step2 for building your Infrastructure on Azure
 
 ## Below are Steps for End-to-End Deployment using  Azure CLI 2.0, this template uses latest Managed Disk, Managed AS, LB and Custom Scripts Extentions
 
 Step1) 
 
     Option 1) az login   # This is manual way to login to Azure with CLI
+    
     or 
-    Option 2) Create Service Principal Id to login with Azure CLI 2.0 https://docs.microsoft.com/en-us/cli/azure/ad/sp  # This more automated may to login to Azure with CLI
+    
+    Option 2) Create Service Principal Id to login with Azure CLI 2.0 https://docs.microsoft.com/en-us/cli/azure/ad/sp  
+    
+    # This more automated may to login to Azure with CLI
 
       a) az ad sp create-for-rbac -n "http://azclidemo" --role contributor --scopes /subscriptions/<subscription id>
 
@@ -66,7 +73,7 @@ az group deployment create -g demo1 --template-uri https://raw.githubusercontent
 
 Step 6) Validate output in Azure Portal for Resources
 
-
+# Deploy Using a GUI
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep1-network%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
