@@ -45,11 +45,15 @@ Step4) azure group deployment create --template-uri https://raw.githubuserconten
 subscriptionId = "<subscription id>"
 
 Step1) 
+
     Option 1) az login
+
     Option 2) Create Service Principal Id to login with Azure CLI 2.0 https://docs.microsoft.com/en-us/cli/azure/ad/sp
+
       a) az ad sp create-for-rbac -n "http://MyApp" --role contributor --scopes /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/MyResourceGroup /subscriptions/11111111-2222-3333-4444-666666666666/resourceGroups/MyAnotherResourceGroup
 
      b) az ad sp show --id a487e0c1-82af-47d9-9a0b-af184eb87646d
+     
      c) az login --service-principal -u {userid} --password {password} --tenant {tenant}
 
 Step2) az account set --subscription $subscriptionId
