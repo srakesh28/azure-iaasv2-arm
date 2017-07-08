@@ -72,6 +72,6 @@ wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-l
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploylb.json
 
-
+Step 6) Validate output in Azure Portal
 
 </html>
