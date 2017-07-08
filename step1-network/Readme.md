@@ -9,46 +9,16 @@ It secures the App Subnet and the DB subnet with appropriate rules.
 It blocks Outbound Internet access to VMs in App and DB Subnets. 
 It opens up DB Subnet only on the mysql DB port to App Subnet.
 
+
 This Template builds up-on Next Template as Step2 for building your Infrastructure on Azure
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep1-network%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-
-</a>
-
-Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
-
-azure login
-
-Username: "your org login"
-
-Pass : "your org pass"
-
-azure account list
-
-azure account set "Your Account Name"
-
-azure config mode arm
-
-Step1) azure group create <resource group name> <resource group location> westus
-ex : azure group create demo1 westus
-
-Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json demo1 (This Template)
-
-Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy.json  demo1
-
-Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json demo1
-
-
-## Azure CLI 2.0  Instructions with Managed Disk, Managed AS, LB and Custom Scripts
-
-subscriptionId = "<subscription id>"
+## Below are Steps for End-to-End Deployment using  Azure CLI 2.0, this template uses latest Managed Disk, Managed AS, LB and Custom Scripts Extentions
 
 Step1) 
 
-    Option 1) az login
-
-    Option 2) Create Service Principal Id to login with Azure CLI 2.0 https://docs.microsoft.com/en-us/cli/azure/ad/sp
+    Option 1) az login   # This is manual way to login to Azure with CLI
+    or 
+    Option 2) Create Service Principal Id to login with Azure CLI 2.0 https://docs.microsoft.com/en-us/cli/azure/ad/sp  # This more automated may to login to Azure with CLI
 
       a) az ad sp create-for-rbac -n "http://azclidemo" --role contributor --scopes /subscriptions/<subscription id>
 
@@ -65,6 +35,8 @@ Step1)
     b) az ad sp show --id xyxxxxzzxxxxxxxxxxx
 
     c) az login --service-principal -u <appID> --password <password>  --tenant <tenant>
+    
+    d) subscriptionId = <subscription id>
 
 Step2) az account set --subscription $subscriptionId
 
@@ -93,5 +65,38 @@ wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-l
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploylb.json
 
 Step 6) Validate output in Azure Portal for Resources
+
+
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep1-network%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+
+</a>
+
+# Below are Steps for End-to-End Deployment using  Azure CLI 1.0  Instructions:
+
+azure login
+
+Username: "your org login"
+
+Pass : "your org pass"
+
+azure account list
+
+azure account set "Your Account Name"
+
+azure config mode arm
+
+Step1) azure group create <resource group name> <resource group location> westus
+ex : azure group create demo1 westus
+
+Step2) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json demo1 (This Template)
+
+Step3) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy.json  demo1
+
+Step4) azure group deployment create --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy.json demo1
+
+
+
 
 </html>
