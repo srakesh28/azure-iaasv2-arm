@@ -50,11 +50,21 @@ Step1)
 
     Option 2) Create Service Principal Id to login with Azure CLI 2.0 https://docs.microsoft.com/en-us/cli/azure/ad/sp
 
-      a) az ad sp create-for-rbac -n "http://MyApp" --role contributor --scopes /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/MyResourceGroup /subscriptions/11111111-2222-3333-4444-666666666666/resourceGroups/MyAnotherResourceGroup
+      a) az ad sp create-for-rbac -n "http://azclidemo" --role contributor --scopes /subscriptions/<subscription id>
 
-     b) az ad sp show --id a487e0c1-82af-47d9-9a0b-af184eb87646d
-     
-     c) az login --service-principal -u {userid} --password {password} --tenant {tenant}
+            You will see output as below:
+
+            {
+                    "appId": "xyxxxxzzxxxxxxxxxxx",
+                    "displayName": "azure-cli-2017-07-08-23-08-36",
+                    "name": "http://azclidemo",
+                    "password": "xxxxxxxxxxxxxxxxx",
+                    "tenant": "xxxxxxxxxxxx"
+                }
+
+    b) az ad sp show --id xyxxxxzzxxxxxxxxxxx
+
+    c) az login --service-principal -u <appID> --password <password>  --tenant <tenant>
 
 Step2) az account set --subscription $subscriptionId
 
