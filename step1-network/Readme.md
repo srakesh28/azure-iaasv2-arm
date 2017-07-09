@@ -1,6 +1,7 @@
 <html>
 <h>
 This template is Step1 of 3 templates to build and Automate Secure Production like deployment on Azure Cloud and utilize best practice for creating IaaS V2 Infrastructure on Azure.
+
 </h>
 It creates a VNet with 3 Subnets:  Web, App and DB subnet. 
 
@@ -53,7 +54,7 @@ az group create --name demo1 --location westus
 
 Step 4) Deploy Network resources 
 
-wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy-netparameters2.json
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy-netparameters2.json --no-check-certificate
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step1-network/azuredeploy.json --parameters @azuredeploy-netparameters2.json
 
@@ -61,13 +62,13 @@ Step 5) Deploy VM resources
 
 Deplopy VM's with Managed Disks
 
-wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-md-parameters.json
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-md-parameters.json --no-check-certificate
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step2-linuxvm/azuredeploy-md.json --parameters @azuredeploy-md-parameters.json
 
 Step4) Deploy LB 
 
-wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy-lbparameters2.json
+wget https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploy-lbparameters2.json --no-check-certificate
 
 az group deployment create -g demo1 --template-uri https://raw.githubusercontent.com/srakesh28/azure-iaasv2-arm/master/step3-lb/azuredeploylb.json
 
