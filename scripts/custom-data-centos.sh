@@ -1,10 +1,6 @@
 #!/bin/sh
 
 mkdir /home/cloud/myapp
-sudo yum install -i httpd
-echo hello_world > /var/www/html/hello.html 2>/dev/null
-sudo yum install -i cloud-init
-
 cd /home/cloud
 cat <<EOT >> cloud-init-centos.txt
 
