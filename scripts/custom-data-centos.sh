@@ -1,5 +1,5 @@
 #!/bin/sh
-
+service httpd start
 mkdir /home/cloud/myapp
 cd /home/cloud
 cat <<EOT >> cloud-init-centos.txt
