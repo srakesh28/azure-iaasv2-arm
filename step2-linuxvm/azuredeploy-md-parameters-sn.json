@@ -33,7 +33,7 @@
 
 		"vmSize": {
 
-			"value": "Standard_A0"
+			"value": "Ds13_v2"
 
 		}
 	}
