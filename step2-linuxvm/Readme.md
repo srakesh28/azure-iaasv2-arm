@@ -14,6 +14,10 @@ This Template builds up-on Next Template as Step3 for building your Infrastructu
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsrakesh28%2Fdemo-working%2Fmaster%2Fstep2-linuxvm%2Fazuredeploy-md-sn.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
 Below are Steps for End-to-End Deployment using  Azure CLI Instructions:
 
 azure login
