@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-    "defaultValue": "westus",
+    "defaultValue": "westus2",
     "type": "string",
     "metadata": {
         "description": "This is the region where the resources will be created"
